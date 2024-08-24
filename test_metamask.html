@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test MetaMask</title>
+</head>
+<body>
+    <h1>MetaMask Test</h1>
+    <button id="connectButton">Connect Wallet</button>
+    <p id="walletAddress"></p>
+
+    <script>
+        document.getElementById('connectButton').addEventListener('click', async () => {
+            if (window.ethereum) {
+                try {
+                    // Request account access
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+                    // Create an ethers provider instance
+                    const provider = new ethers.BrowserProvider(window.ethereum);
+
+                    // Get the first account address
+                    const signer = provider.getSigner();
+                    const address = await signer.getAddress();
+
+                    // Display the wallet address
+                    document.getElementById('walletAddress').innerText = `Connected Address: ${address}`;
+                } catch (error) {
+                    console.error('Failed to connect wallet:', error);
+                    alert('Failed to connect wallet. Ensure MetaMask is installed and configured correctly.');
+                }
+            } else {
+                alert('MetaMask is not installed. Please install it.');
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.min.js"></script>
+</body>
+</html>

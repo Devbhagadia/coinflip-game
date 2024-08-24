@@ -1,0 +1,40 @@
+/* globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .connect-button, .action-button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0070f3;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  
+  .input-field, .select-field {
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .result {
+    margin-top: 20px;
+    font-size: 1.2em;
+  }
+  
