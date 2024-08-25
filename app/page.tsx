@@ -20,9 +20,6 @@ export default function CoinFlipGame() {
         }
     }, []);
 
-    // Define the switchNetwork function
-
-
     const connectWallet = async () => {
         if (window.ethereum) {
             try {
@@ -40,27 +37,26 @@ export default function CoinFlipGame() {
 
     const flipCoin = async () => {
         try {
-
-            if (!connectedAccount) {
+             if (!connectedAccount) {
                 alert('Please connect your wallet first.');
                 return;
             }
-    
+
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
-    
-            const contractAddress = '0x858527E11281aAC4eA1C0ef338054089b0443721';
+
+            const contractAddress = '0x2F764De3caaBEBE2cA93bbF4F2EB41114Cec5B47'; // Updated address
             const contractABI = [
                 'function flipCoin(string memory choice) public payable returns (bool)',
             ];
-    
+
             const contract = new ethers.Contract(contractAddress, contractABI, signer);
-    
+
             const tx = await contract.flipCoin(side, {
-                value: ethers.parseEther(amount),
+                value: ethers.parseEther(amount), // Convert ETH to wei
                 gasLimit: 300000,
             });
-    
+
             await tx.wait();
             setResult('Coin flip successful!');
         } catch (error: any) {
@@ -68,11 +64,10 @@ export default function CoinFlipGame() {
             setResult(`Coin flip failed: ${error.message}`);
         }
     };
-    
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex flex-col items-center justify-center p-6">
-            <div className="bg-white shadow-lg rounded-lg p-8 max-w-lg w-full">
+            <div className="bg-white shadow-xl rounded-lg p-8 max-w-lg w-full">
                 <h1 className="text-4xl font-bold text-center text-blue-700 mb-6">Coin Flip Game</h1>
                 <button
                     onClick={connectWallet}
@@ -87,8 +82,7 @@ export default function CoinFlipGame() {
                 <div className="mb-6">
                     <label className="block text-gray-700 text-sm font-semibold mb-2">Amount (ETH):</label>
                     <input
-                        type="number"
-                        step="0.0000000001"
+                        type="text"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -121,4 +115,3 @@ export default function CoinFlipGame() {
         </div>
     );
 }
-
