@@ -40,8 +40,7 @@ export default function CoinFlipGame() {
 
     const flipCoin = async () => {
         try {
-            await switchNetwork(); // Ensure we're on Sepolia
-    
+
             if (!connectedAccount) {
                 alert('Please connect your wallet first.');
                 return;
@@ -121,9 +120,5 @@ export default function CoinFlipGame() {
             </div>
         </div>
     );
-}
-
-function switchNetwork() {
-    throw new Error('Function not implemented.');
 }
 
