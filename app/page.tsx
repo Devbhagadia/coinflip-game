@@ -19,44 +19,7 @@ export default function CoinFlipGame() {
         }
     }, []);
 
-    const switchNetwork = async () => {
-        if (window.ethereum) {
-            try {
-                const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
 
-                if (currentChainId !== '0xaa36a7') {
-                    await window.ethereum.request({
-                        method: 'wallet_switchEthereumChain',
-                        params: [{ chainId: '0xaa36a7' }],
-                    });
-                }
-            } catch (error) {
-                console.error('Failed to switch network:', error);
-                try {
-                    await window.ethereum.request({
-                        method: 'wallet_addEthereumChain',
-                        params: [
-                            {
-                                chainId: '0xaa36a7',
-                                chainName: 'Sepolia Testnet',
-                                rpcUrls: ['https://rpc.sepolia.org'],
-                                nativeCurrency: {
-                                    name: 'SepoliaETH',
-                                    symbol: 'ETH',
-                                    decimals: 18,
-                                },
-                                blockExplorerUrls: ['https://sepolia.etherscan.io'],
-                            },
-                        ],
-                    });
-                } catch (addError) {
-                    console.error('Failed to add Sepolia network:', addError);
-                }
-            }
-        } else {
-            alert('MetaMask is not installed. Please install it to continue.');
-        }
-    };
 
     const connectWallet = async () => {
         if (window.ethereum) {
@@ -156,3 +119,7 @@ export default function CoinFlipGame() {
         </div>
     );
 }
+function switchNetwork() {
+    throw new Error('Function not implemented.');
+}
+
