@@ -39,32 +39,32 @@ export default function CoinFlipGame() {
     const flipCoin = async () => {
         try {
             await switchNetwork(); // Ensure we're on Sepolia
-    
+
             if (!connectedAccount) {
                 alert('Please connect your wallet first.');
                 return;
             }
-    
+
             const provider = new ethers.BrowserProvider(window.ethereum);
             const signer = await provider.getSigner();
-    
+
             const contractAddress = '0x858527E11281aAC4eA1C0ef338054089b0443721';
             const contractABI = [
                 'function flipCoin(string memory choice) public payable returns (bool)',
             ];
-    
+
             const contract = new ethers.Contract(contractAddress, contractABI, signer);
-    
+
             const tx = await contract.flipCoin(side, {
                 value: ethers.parseEther(amount),
                 gasLimit: 300000,
             });
-    
-            await tx.wait(); // Wait for transaction confirmation
+
+            await tx.wait();
             setResult('Coin flip successful!');
-        } catch (error) {
+        } catch (error: any) {
             console.error('Transaction failed:', error);
-            setResult(`Coin flip failed: `);
+            setResult(`Coin flip failed: ${error.message}`);
         }
     };
     
