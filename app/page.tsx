@@ -23,7 +23,7 @@ export default function CoinFlipGame() {
         if (window.ethereum) {
             try {
                 const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
-
+    
                 if (currentChainId !== '0xaa36a7') {
                     await window.ethereum.request({
                         method: 'wallet_switchEthereumChain',
@@ -32,7 +32,12 @@ export default function CoinFlipGame() {
                 }
             } catch (error) {
                 console.error('Failed to switch network:', error);
-                if (error.code === 4902) {
+    
+                // Cast error to Error type
+                const err = error as Error;
+                
+                if (err.message.includes('4902')) {
+                    // If Sepolia is not added to MetaMask, add it
                     try {
                         await window.ethereum.request({
                             method: 'wallet_addEthereumChain',
@@ -59,6 +64,7 @@ export default function CoinFlipGame() {
             alert('MetaMask is not installed. Please install it to continue.');
         }
     };
+    
 
     const connectWallet = async () => {
         if (window.ethereum) {
