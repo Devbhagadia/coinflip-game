@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
 export default function CoinFlipGame() {
-    const [connectedAccount, setConnectedAccount] = useState('');
-    const [amount, setAmount] = useState('');
-    const [side, setSide] = useState('Heads');
-    const [result, setResult] = useState('');
+    const [connectedAccount, setConnectedAccount] = useState<string>('');
+    const [amount, setAmount] = useState<string>('');
+    const [side, setSide] = useState<string>('Heads');
+    const [result, setResult] = useState<string>('');
 
     useEffect(() => {
         if (typeof window.ethereum !== 'undefined') {
@@ -23,7 +23,7 @@ export default function CoinFlipGame() {
         if (window.ethereum) {
             try {
                 const currentChainId = await window.ethereum.request({ method: 'eth_chainId' });
-    
+
                 if (currentChainId !== '0xaa36a7') {
                     await window.ethereum.request({
                         method: 'wallet_switchEthereumChain',
@@ -32,39 +32,31 @@ export default function CoinFlipGame() {
                 }
             } catch (error) {
                 console.error('Failed to switch network:', error);
-    
-                // Cast error to Error type
-                const err = error as Error;
-                
-                if (err.message.includes('4902')) {
-                    // If Sepolia is not added to MetaMask, add it
-                    try {
-                        await window.ethereum.request({
-                            method: 'wallet_addEthereumChain',
-                            params: [
-                                {
-                                    chainId: '0xaa36a7',
-                                    chainName: 'Sepolia Testnet',
-                                    rpcUrls: ['https://rpc.sepolia.org'],
-                                    nativeCurrency: {
-                                        name: 'SepoliaETH',
-                                        symbol: 'ETH',
-                                        decimals: 18,
-                                    },
-                                    blockExplorerUrls: ['https://sepolia.etherscan.io'],
+                try {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [
+                            {
+                                chainId: '0xaa36a7',
+                                chainName: 'Sepolia Testnet',
+                                rpcUrls: ['https://rpc.sepolia.org'],
+                                nativeCurrency: {
+                                    name: 'SepoliaETH',
+                                    symbol: 'ETH',
+                                    decimals: 18,
                                 },
-                            ],
-                        });
-                    } catch (addError) {
-                        console.error('Failed to add Sepolia network:', addError);
-                    }
+                                blockExplorerUrls: ['https://sepolia.etherscan.io'],
+                            },
+                        ],
+                    });
+                } catch (addError) {
+                    console.error('Failed to add Sepolia network:', addError);
                 }
             }
         } else {
             alert('MetaMask is not installed. Please install it to continue.');
         }
     };
-    
 
     const connectWallet = async () => {
         if (window.ethereum) {
